@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo 'Installing dependencies...'
+      - yum update -y
+  build:
+    commands:
+      - echo 'Building and preparing artifacts...'
+      - mkdir -p build-output
+      - cp sample.txt build-output/
+  post_build:
+    commands:
+      - echo 'Uploading to S3...'
+      - aws s3 cp build-output/ s3://aws-codepipeline-s3-deploy-bucket/ --recursive
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no"
